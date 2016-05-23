@@ -1,0 +1,35 @@
+@extends('layouts.master')
+
+@section('title')
+	You account
+@endsection
+
+@section('content')
+	<div class="section row new-post">
+		<div class="col-md-6 col-md-offset-3">
+			<header>
+				<h3>Your Account</h3>
+			</header>
+			<form action="{{ route('account.save') }}" method="post" enctype="multipart/form-data">
+				<div class="form-group">
+					<label for="first_name">First Name</label>
+					<input type="text" name="first_name" value="{{ $user->first_name }}" id="first_name" class="form-control">
+				</div>
+				<div class="form-group">
+					<label for="image">Image (only.jpg)</label>
+					<input type="file" name="image" id="image" class="form-control">
+				</div>
+				<button type="submit" class="btn btn-primary">Save Account</button>
+				<input type="hidden" value="{{ Session::token() }}" name="_token">
+			</form>
+		</div>
+	</div>
+	@if(Storage::disk('local')->has($user->first_name . '-' . $user->id . '.jpg'))
+			<section class="row new-post">
+				<div class="col-md-6 col-md-offset-3">
+					<img src="{{ route('account.image', ['filename' => $user->first_name . '-' . $user->id . '.jpg']) }}" alt="User image" class="image-responsive">
+				</div>
+			</section>
+
+	@endif
+@endsection
